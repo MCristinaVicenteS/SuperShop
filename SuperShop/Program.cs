@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace SuperShop
 {
+    //arrabca com as configurações do startup -> é od ficam as configurações
     public class Program
     {
+        //host permite adaptar-se a qq sistema
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
