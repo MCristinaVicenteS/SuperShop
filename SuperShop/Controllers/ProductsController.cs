@@ -22,7 +22,7 @@ namespace SuperShop.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _context.Products.ToListAsync()); //vai ao datacontex -> à propriedade dos produtos -> e trás todos em lista para dentro da view
         }
 
         // GET: Products/Details/5
@@ -44,7 +44,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public IActionResult Create() //nao tem nenhum parÂmetro -> n envia produtos. MAS qd clicar no botão submit (view) -> vai enviar dados para fora
         {
             return View();
         }
@@ -58,27 +58,28 @@ namespace SuperShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Add(product); //se for válido -> fica guardado em memória -> n na BD
+                await _context.SaveChangesAsync(); //grava na BD
+                return RedirectToAction(nameof(Index)); //qd estiver gravado -> redirecciona para a action index -> mostra a lista dos produtos
             }
-            return View(product);
+            return View(product); //se n passar na validação -> deixa os dados nos campos mas n os grava
         }
 
         // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id) //tem ? para n forçar o user a colocar um id no url -> é opcional; Sem o ?, se n colocasse id -> rebentava
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            //dupla segurança
+            var product = await _context.Products.FindAsync(id); //vai ver na memória se o id colocado no url -> existe ou n
             if (product == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(product); //se encotrar o produto -> mostra-o
         }
 
         // POST: Products/Edit/5
@@ -86,7 +87,7 @@ namespace SuperShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,ImageUrl,LastPurchase,LastSale,IsAvailable,Stock")] Product product)
+        public async Task<IActionResult> Edit(int id, Product product) //recebe o id e o produto completo
         {
             if (id != product.Id)
             {
@@ -102,7 +103,7 @@ namespace SuperShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!ProductExists(product.Id)) //se o id já n existir pq alg apagou -> retorna
                     {
                         return NotFound();
                     }
@@ -111,9 +112,9 @@ namespace SuperShop.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); //no final redirecciona para o index
             }
-            return View(product);
+            return View(product); //se alguma coisa correr mal -> retorna com o produto como estava
         }
 
         // GET: Products/Delete/5
@@ -135,7 +136,7 @@ namespace SuperShop.Controllers
         }
 
         // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")] //isto é preciso para saber que vai receber informaçao http do tipo POST -> para executar esta action
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -145,7 +146,7 @@ namespace SuperShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private bool ProductExists(int id) //método auxiliar para procurar o produto
         {
             return _context.Products.Any(e => e.Id == id);
         }
