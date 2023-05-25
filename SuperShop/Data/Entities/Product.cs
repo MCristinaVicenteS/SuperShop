@@ -6,6 +6,10 @@ namespace SuperShop.Data.Entities
     public class Product
     {
         public int Id { get; set; }
+
+        //data annotation para ser obrigatório preencher o nome e com limite máximo
+        [Required]
+        [MaxLength(50, ErrorMessage = "The field {0} can contain {1} length")] //mensagem de erro -> o campo 0 é o campo name; o 1 é o parâmetro 50 (length). NOTA: n vai aparecer
         public string Name { get; set; }
 
         //Data annotation
@@ -16,10 +20,10 @@ namespace SuperShop.Data.Entities
         public string ImageUrl { get; set; }
 
         [Display(Name = "LastPurchase")]
-        public DateTime LastPurchase { get; set; }
+        public DateTime? LastPurchase { get; set; } //? -> opcional
 
         [Display(Name = "LastSale")]
-        public DateTime LastSale { get; set; }
+        public DateTime? LastSale { get; set; }
 
         [Display(Name = "Is Available")]
         public bool IsAvailable { get; set; }
