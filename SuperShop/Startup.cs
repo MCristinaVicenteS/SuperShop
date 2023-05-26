@@ -35,6 +35,16 @@ namespace SuperShop
 ;
             });
 
+            //usar o serviço do seedDb para criar a BD se n existir
+            //addtransient -> usa e deita fora -> deixa de ficar em memória. Pq qd for usado -> passamos a ter BD
+            services.AddTransient<SeedDb>();
+
+
+            // AddSingleton -> o objecto nc é destroido -> fica smp em memória ->>>> OCUPA mt memória
+
+            // AddScope ->  qq serviço/objecto q apareça, fica criado e instanciado -> qd crio outro do mm tipo -> apaga o anterior e fica com o novo
+
+
             services.AddControllersWithViews();
         }
 
