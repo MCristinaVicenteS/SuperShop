@@ -41,7 +41,7 @@ namespace SuperShop
 
             // AddScope ->qq serviço/objecto q apareça, fica criado e instanciado -> qd crio outro do mm tipo -> apaga o anterior e fica com o novo
             //Assim q detectar q é preciso um repositorio -> cria um
-            services.AddScoped<IRepository, Repository>(); 
+            services.AddScoped<IProductRepository, ProductRepository>(); 
 
             // AddSingleton -> o objecto nc é destruido -> fica smp em memória ->>>> OCUPA mt memória
 
