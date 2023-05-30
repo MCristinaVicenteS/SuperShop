@@ -7,17 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data;
 using SuperShop.Data.Entities;
+using SuperShop.Helpers;
 
 namespace SuperShop.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly IUserHelper _userHelper;
 
         //injectar o IRepository
-        public ProductsController(IProductRepository productRepository) 
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper) 
         {
             _productRepository = productRepository; //n é preciso instanciar o objecto pq uso o injector de dependências -> startup.cs           
+            _userHelper = userHelper;
         }
 
         // GET: Products
@@ -58,6 +61,8 @@ namespace SuperShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: modificar para o user que tiver logado
+                product.User = await _userHelper.GetUserByEmailAsync("rafaasfs@gmail.com");
                 await _productRepository.CreateAsync(product); //se for válido -> fica guardado em memória -> n na BD
                 return RedirectToAction(nameof(Index)); //qd estiver gravado -> redirecciona para a action index -> mostra a lista dos produtos
             }
@@ -97,6 +102,8 @@ namespace SuperShop.Controllers
             {
                 try
                 {
+                    //TODO: modificar para o user que tiver logado
+                    product.User = await _userHelper.GetUserByEmailAsync("rafaasfs@gmail.com");
                     await _productRepository.UpdateAsync(product);
                 }
                 catch (DbUpdateConcurrencyException)

@@ -30,5 +30,8 @@ namespace SuperShop.Data.Entities
 
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)] //N -> number
         public double Stock { get; set; }
+
+        //o user que criou o produto
+        public User User { get; set; }
     }
 }
