@@ -19,7 +19,7 @@ namespace SuperShop.Controllers.API
         [HttpGet]
         public ActionResult GetProducts()
         {
-            return Ok(_productRepository.GetAll()); //dados em json através da função Ok
+            return Ok(_productRepository.GetAllWithUsers()); //dados em json através da função Ok
         }
     }
 }
