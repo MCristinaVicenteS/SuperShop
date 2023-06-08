@@ -159,7 +159,7 @@ namespace SuperShop.Controllers
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "products");
                     }
 
-                    var product = this.ToProduct(model, path);
+                    var product = _converterHelper.ToProduct(model, path, false);
 
                     //TODO: modificar para o user que tiver logado
                     product.User = await _userHelper.GetUserByEmailAsync("rafaasfs@gmail.com");
