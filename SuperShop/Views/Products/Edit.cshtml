@@ -12,7 +12,7 @@
         <form asp-action="Edit" enctype="multipart/from-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" /> @*o id passa escondido para o user -> mas preciso dele para o update*@
-            <input type="hidden" asp-for="ImageUrl" /> @*o url passa escondido para o user -> mas preciso dele para o update*@
+            <input type="hidden" asp-for="ImageId" /> @*o url passa escondido para o user -> mas preciso dele para o update*@
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -55,11 +55,8 @@
             </div>
         </form>
     </div>
-    <div class="col-md-4">
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <img src="@Url.Content(Model.ImageUrl)" alt ="Image" style="width:300px;height:450px;max-width:100%;height:auto">@*adicionar a imagem*@         
-        }
+    <div class="col-md-4">        
+            <img src="@Url.Content(Model.ImageFullPath)" alt ="Image" style="width:300px;height:450px;max-width:100%;height:auto">@*adicionar a imagem*@           
     </div>
 </div>
 

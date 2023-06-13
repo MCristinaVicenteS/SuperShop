@@ -1,5 +1,6 @@
 ﻿using SuperShop.Data.Entities;
 using SuperShop.Models;
+using System;
 
 namespace SuperShop.Helpers
 {
@@ -8,7 +9,7 @@ namespace SuperShop.Helpers
         //converter o viewmodel em product
         //o bool server para qd editar - para saber se o id é inserido aqui ou se vem pela tabela
         //no path passa o caminho para a imagem
-        Product ToProduct(ProductViewModel modle, string path, bool isNew);
+        Product ToProduct(ProductViewModel modle, Guid imageId, bool isNew);
 
         //converter o product em viewModel
         ProductViewModel ToProductViewModel(Product product);

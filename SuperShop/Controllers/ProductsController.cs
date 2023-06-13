@@ -17,15 +17,15 @@ namespace SuperShop.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly IUserHelper _userHelper;
-        private readonly IImageHelper _imageHelper;
+        private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
         //injectar o IRepository
-        public ProductsController(IProductRepository productRepository, IUserHelper userHelper, IImageHelper imageHelper, IConverterHelper converterHelper) 
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper, IBlobHelper blobHelper, IConverterHelper converterHelper) 
         {
             _productRepository = productRepository; //n é preciso instanciar o objecto pq uso o injector de dependências -> startup.cs           
             _userHelper = userHelper;
-            _imageHelper = imageHelper;
+            _blobHelper = blobHelper;
             _converterHelper = converterHelper;
         }
 
@@ -68,16 +68,16 @@ namespace SuperShop.Controllers
             if (ModelState.IsValid)
             {
                 //carregar a imagem
-                var path = string.Empty;
+                Guid imageId = Guid.Empty;
 
                 if(model.ImageFile != null && model.ImageFile.Length > 0) //se o model tiver uma imagem
                 {
                     //usar esse método -> enviar o ficheiro e guardar nessa pasta
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "products");
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
                 }
 
                 //converter o ProductViewModel em Product -> pq quero continuar a gravar o Product na BD
-                var product = _converterHelper.ToProduct(model, path, true);
+                var product = _converterHelper.ToProduct(model, imageId, true);
 
 
                 //TODO: modificar para o user que tiver logado
@@ -152,14 +152,14 @@ namespace SuperShop.Controllers
             {
                 try
                 {
-                    var path = model.ImageUrl; //n é empty para o caso de n alterar a imagem
+                    Guid imageId = model.ImageId; //n é empty para o caso de n alterar a imagem
 
                     if(model.ImageFile != null && model.ImageFile.Length > 0)
                     {                        
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "products");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
                     }
 
-                    var product = _converterHelper.ToProduct(model, path, false);
+                    var product = _converterHelper.ToProduct(model, imageId, false);
 
                     //TODO: modificar para o user que tiver logado
                     product.User = await _userHelper.GetUserByEmailAsync("rafaasfs@gmail.com");
