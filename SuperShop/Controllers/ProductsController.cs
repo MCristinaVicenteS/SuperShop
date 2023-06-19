@@ -13,8 +13,7 @@ using SuperShop.Helpers;
 using SuperShop.Models;
 
 namespace SuperShop.Controllers
-{
-    [Authorize]
+{    
     public class ProductsController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -55,6 +54,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Create
+        [Authorize]
         public IActionResult Create() //nao tem nenhum parÂmetro -> n envia produtos. MAS qd clicar no botão submit (view) -> vai enviar dados para fora
         {
             return View();
@@ -107,6 +107,7 @@ namespace SuperShop.Controllers
         //}
 
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id) //tem ? para n forçar o user a colocar um id no url -> é opcional; Sem o ?, se n colocasse id -> rebentava
         {
             if (id == null)
