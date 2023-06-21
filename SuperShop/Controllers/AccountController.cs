@@ -115,5 +115,89 @@ namespace SuperShop.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> ChangeUser()
+        {
+            var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name); //encontrar o user
+
+            //criar o modelo - para aparecem os dados -> é como o edit
+            var model = new ChangeUserViewModel();
+            if(user != null)
+            {
+                model.FirstName = user.FirstName;
+                model.LastName = user.LastName;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
+        {
+            //confirmar se o user existe
+            if(ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name); //encontrar o user
+
+                //verficar se user n é nulo
+                if (user != null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+
+                    //fazer o update
+                    var response = await _userHelper.UpdateUserAsync(user);
+
+                    //se fizer o upate
+                    if(response.Succeeded)
+                    {
+                        ViewBag.UserMessage = "User update!";
+                    }
+
+                    //se n fizer o update - envia msg de erro
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                    }
+                }
+            }
+                        
+            return View(model);
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //verificar se o user existe
+                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                
+                //se o user existir -> posso mudar a pass
+                if (user != null)
+                {
+                    var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                    if(result.Succeeded)
+                    {
+                        return this.RedirectToAction("ChangeUser");
+                    }
+                    else
+                    {
+                        this.ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
+                    }
+                }
+                else
+                {
+                    this.ModelState.AddModelError(string.Empty, "User not found.");
+                }
+
+            }
+
+            return this.View(model);
+        }
     }
 }
