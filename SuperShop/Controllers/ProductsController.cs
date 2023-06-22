@@ -41,13 +41,13 @@ namespace SuperShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value); //com .value aceita id sem valor e não rebenta
             if (product == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             return View(product);
@@ -112,14 +112,14 @@ namespace SuperShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             //dupla segurança
             var product = await _productRepository.GetByIdAsync(id.Value); //vai ver na memória se o id colocado no url -> existe ou n
             if (product == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             //Converter o product em productViewModel para aparecer a imagem
@@ -190,13 +190,13 @@ namespace SuperShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value);
             if (product == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ProductNotFound");
             }
 
             return View(product);
@@ -210,6 +210,11 @@ namespace SuperShop.Controllers
             var product = await _productRepository.GetByIdAsync(id);
             await _productRepository.DeleteAsync(product);            
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult ProductNotFound()
+        {
+            return View();
         }
     }
 }

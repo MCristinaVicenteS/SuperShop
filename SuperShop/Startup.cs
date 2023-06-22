@@ -65,10 +65,15 @@ namespace SuperShop
 
             // AddScope ->qq serviço/objecto q apareça, fica criado e instanciado -> qd crio outro do mm tipo -> apaga o anterior e fica com o novo
             //Assim q detectar q é preciso um repositorio -> cria um
-            services.AddScoped<IProductRepository, ProductRepository>(); 
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             // AddSingleton -> o objecto nc é destruido -> fica smp em memória ->>>> OCUPA mt memória
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized"; //anula a action de retorno 
+                options.AccessDeniedPath = "/Account/NotAuthorized"; //chama esta action view
+            });
 
 
 
@@ -88,6 +93,9 @@ namespace SuperShop
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
