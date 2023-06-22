@@ -54,7 +54,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Create
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() //nao tem nenhum parÂmetro -> n envia produtos. MAS qd clicar no botão submit (view) -> vai enviar dados para fora
         {
             return View();

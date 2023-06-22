@@ -30,6 +30,11 @@ namespace SuperShop.Data
             //vai criar a BD -> se a BD j estiver criada -> continua
             await _context.Database.EnsureCreatedAsync();
 
+            //verificar se os roles existem
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Customer");
+
+
             //verificar se o user já existe -> o que a aplicação vai criar -> vai ser o Admin
             var user = await _userHelper.GetUserByEmailAsync("rafaasfs@gmail.com");
 
@@ -45,15 +50,27 @@ namespace SuperShop.Data
                     PhoneNumber = "212343555"
                 };
 
-                //usa a classe userManager para o criar -> recebe 2 parâmetros (user e pass)
+                //usa a classe userManager para criar o user por defeito -> recebe 2 parâmetros (user e pass)
                 var result = await _userHelper.AddUserAsync(user, "123456");
                 
                 if(result != IdentityResult.Success)
                 {
                     throw new InvalidOperationException("Could not creat user in seeder");
                 }
+
+                //adicionar o role q já existe (criado no userHelper) ao role q vou passar
+                //vou passar o admin para ficar associado ao user por default -> fica o admin
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
+            //confirmar se o user está no role q foi escolhido
+            var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+
+            //se o user criado n tiver o role escolhido -> cria a associação
+            if(!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+            }
 
             //inserir os produtos na tabela da BD
             //se n existirem produtos -> usa o método para adicioanar os produtos -> adiciona smp estes
