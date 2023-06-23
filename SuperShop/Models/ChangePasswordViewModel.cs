@@ -5,7 +5,7 @@ namespace SuperShop.Models
     public class ChangePasswordViewModel
     {
         [Required]
-        [Display(Name = "Current password")] //não tenho de comparar com a pass actual?
+        [Display(Name = "Current password")]
         public string OldPassword { get; set; }
          
         [Required]
