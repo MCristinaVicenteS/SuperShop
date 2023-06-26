@@ -67,6 +67,8 @@ namespace SuperShop
             //Assim q detectar q é preciso um repositorio -> cria um
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
             // AddSingleton -> o objecto nc é destruido -> fica smp em memória ->>>> OCUPA mt memória
 
             services.ConfigureApplicationCookie(options =>

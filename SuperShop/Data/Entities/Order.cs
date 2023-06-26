@@ -29,7 +29,7 @@ namespace SuperShop.Data.Entities
         public IEnumerable<OrderDetail> Items { get; set; }
 
         //se os items forem null é pq n tenho encomenda -> o valor é zero
-        //caso contrario, soma  todos os itens
+        //caso contrario, soma  todos os items
         //n fica na tabela -> é calculado na hora
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public double Quantity => Items == null ? 0 : Items.Sum(i => i.Quantity);
