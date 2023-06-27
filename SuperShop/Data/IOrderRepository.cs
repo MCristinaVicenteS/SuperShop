@@ -21,5 +21,8 @@ namespace SuperShop.Data
 
         //task para apagar -> recebe o id do detailTemp q tem de apagar e apga
         Task DeleteDetailTempAsync(int id);
+
+        //task para confirmar se está td bem ou n com a encomenda
+        Task<bool> ConfirmOrderAsync(string userName);
     }
 }
