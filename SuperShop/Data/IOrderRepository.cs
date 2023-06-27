@@ -1,4 +1,5 @@
 ﻿using SuperShop.Data.Entities;
+using SuperShop.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,5 +12,11 @@ namespace SuperShop.Data
 
         //task q vai devolcer uma tabela do tipo orderDetailTemp - tabela temporária do user
         Task<IQueryable<OrderDetailTemp>> GetDetailTempAsync(string userName);
+
+        //task q vai adicionar itens à lista temporária
+        Task AddItemToOrderAsync(AddItemViewModel mode, string userName);
+
+        //task para poder alterar a qt de um item já adicionado à lista temporária
+        Task ModifyOrderDetailTempQuantityAsync(int id, double quantity);
     }
 }
