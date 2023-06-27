@@ -18,5 +18,8 @@ namespace SuperShop.Data
 
         //task para poder alterar a qt de um item já adicionado à lista temporária
         Task ModifyOrderDetailTempQuantityAsync(int id, double quantity);
+
+        //task para apagar -> recebe o id do detailTemp q tem de apagar e apga
+        Task DeleteDetailTempAsync(int id);
     }
 }
