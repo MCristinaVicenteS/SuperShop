@@ -54,7 +54,6 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Create
-        [Authorize(Roles = "Admin")]
         public IActionResult Create() //nao tem nenhum parÂmetro -> n envia produtos. MAS qd clicar no botão submit (view) -> vai enviar dados para fora
         {
             return View();
@@ -205,11 +204,32 @@ namespace SuperShop.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")] //isto é preciso para saber que vai receber informaçao http do tipo POST -> para executar esta action
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _productRepository.GetByIdAsync(id);
-            await _productRepository.DeleteAsync(product);            
-            return RedirectToAction(nameof(Index));
+
+            try
+            {
+                await _productRepository.DeleteAsync(product);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                if(true)
+                {
+                    ViewBag.ErrorTitle = $"{product.Name} provavelmente está a ser usado.";
+                    ViewBag.ErrorMessage = $"{product.Name} não pode ser apagado visto haver encomendas que o usam.</br></br>" +
+                        $"Experimente, apagar primeiro todas as encomendas que o usam," +
+                        $"e torne novamente a apagá-lo";
+                }
+                
+
+                return View("Error");
+
+            }
+
+            
         }
 
         public IActionResult ProductNotFound()
