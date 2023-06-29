@@ -24,5 +24,11 @@ namespace SuperShop.Data
 
         //task para confirmar se está td bem ou n com a encomenda
         Task<bool> ConfirmOrderAsync(string userName);
+
+        //Task para ir buscar a data da entrega com o modelo deliveryViewModel
+        Task DeliverOrder(DeliveryViewModel model);
+
+        //Task para procurar a encomenda por id
+        Task<Order> GetOrderAsync(int id);
     }
 }
