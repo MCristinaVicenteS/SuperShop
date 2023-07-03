@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +35,22 @@ namespace SuperShop.Data
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Customer");
 
+            //criar uma lista de cidades q é associado a um país
+            if (!_context.Countries.Any())
+            {
+                var cities = new List<City>();
+                cities.Add(new City { Name = "Lisboa" });
+                cities.Add(new City { Name = "Porto" });
+                cities.Add(new City { Name = "Faro" });
+
+                _context.Countries.Add(new Country
+                {
+                    Cities = cities,
+                    Name = "Portugal"
+                });
+
+                await _context.SaveChangesAsync();
+            }
 
             //verificar se o user já existe -> o que a aplicação vai criar -> vai ser o Admin
             var user = await _userHelper.GetUserByEmailAsync("rafaasfs@gmail.com");
@@ -47,7 +64,10 @@ namespace SuperShop.Data
                     LastName = "Santos",
                     Email = "rafaasfs@gmail.com",
                     UserName = "rafaasfs@gmail.com",
-                    PhoneNumber = "212343555"
+                    PhoneNumber = "212343555",
+                    Address = "Rua Jau 33",
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault()
                 };
 
                 //usa a classe userManager para criar o user por defeito -> recebe 2 parâmetros (user e pass)

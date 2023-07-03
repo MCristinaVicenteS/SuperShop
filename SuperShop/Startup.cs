@@ -69,6 +69,9 @@ namespace SuperShop
 
             services.AddScoped<IOrderRepository, OrderRepository>();
 
+            services.AddScoped<ICountryRepository, CountryRepository>();
+
+
             // AddSingleton -> o objecto nc é destruido -> fica smp em memória ->>>> OCUPA mt memória
 
             services.ConfigureApplicationCookie(options =>
