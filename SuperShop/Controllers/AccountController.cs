@@ -260,6 +260,7 @@ namespace SuperShop.Controllers
             return this.View(model);
         }
 
+        //Criar token para api
         [HttpPost]
         public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
         {
