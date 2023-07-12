@@ -81,6 +81,12 @@ namespace SuperShop.Data
                 //adicionar o role q já existe (criado no userHelper) ao role q vou passar
                 //vou passar o admin para ficar associado ao user por default -> fica o admin
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
+
+                //associar ao admin, um token criado
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+                //confrimar o token
+                await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             //confirmar se o user está no role q foi escolhido

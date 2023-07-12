@@ -30,11 +30,13 @@ namespace SuperShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //AUTENTICAÇÃO DA WEB
             //configuração do user -> usa a minha identidade User e o IdentityRole 
             //configurar a pass -> neste caso sem protecção
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
+                cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                cfg.SignIn.RequireConfirmedEmail = true;
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;
                 cfg.Password.RequiredUniqueChars = 0;
@@ -43,8 +45,10 @@ namespace SuperShop
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
             })
+                .AddDefaultTokenProviders() //Começa a criar os tokens na web
                 .AddEntityFrameworkStores<DataContext>(); //dp do serviço estar implementado -> dp do login -> volta a usar o datacontext simples
 
+            //AUTENTICAÇÃO DA API
             services.AddAuthentication()
                 .AddCookie()
                 .AddJwtBearer(cfg =>
@@ -78,6 +82,8 @@ namespace SuperShop
             services.AddScoped<IBlobHelper, BlobHelper>();
 
             services.AddScoped<IConverterHelper, ConverterHelper>();
+
+            services.AddScoped<IMailHelper, MailHelper>();
 
             // AddScope ->qq serviço/objecto q apareça, fica criado e instanciado -> qd crio outro do mm tipo -> apaga o anterior e fica com o novo
             //Assim q detectar q é preciso um repositorio -> cria um
