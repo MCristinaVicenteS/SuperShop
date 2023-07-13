@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data.Entities;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace SuperShop.Data
 {
@@ -26,6 +27,30 @@ namespace SuperShop.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        {
+            modelbuilder.Entity<Country>()
+                .HasIndex(c => c.Name)
+            .IsUnique();
+
+            modelbuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelbuilder.Entity<OrderDetailTemp>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelbuilder.Entity<OrderDetail>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            base.OnModelCreating(modelbuilder);
+        }
+
+        
+
 
         //Habilitar apagar em cascata
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
