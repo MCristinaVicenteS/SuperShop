@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vereyon.Web;
 
 namespace SuperShop
 {
@@ -72,6 +73,8 @@ namespace SuperShop
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
 ;
             });
+
+            services.AddFlashMessage();
 
             //usar o serviço do seedDb para criar a BD se n existir
             //addtransient -> usa e deita fora -> deixa de ficar em memória. Pq qd for usado -> passamos a ter BD
